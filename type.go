@@ -14,6 +14,7 @@ type User struct {
 	NomorPolisi     string             `bson:"nomorpolisi,omitempty" json:"nomorpolisi,omitempty"`
 	Email           string             `bson:"email,omitempty" json:"email,omitempty"`
 	Password        string             `bson:"password,omitempty" json:"password,omitempty"`
+	Image           string             `bson:"image,omitempty" json:"image,omitempty"`
 	Confirmpassword string             `bson:"confirmpass,omitempty" json:"confirmpass,omitempty"`
 	Salt            string             `bson:"salt,omitempty" json:"salt,omitempty"`
 }

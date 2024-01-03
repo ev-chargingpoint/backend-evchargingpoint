@@ -12,8 +12,11 @@ import (
 
 var imageUrl string
 
-func PutUser(idparam primitive.ObjectID, db *mongo.Database, r *http.Request) (err error) {
-
+func PutProfile(idparam primitive.ObjectID, db *mongo.Database, r *http.Request) (bson.M, error) {
+	dataUser, err := GetUserFromID(idparam, db)
+	if err != nil {
+		return bson.M{}, err
+	}
 	namalengkap := r.FormValue("namalengkap")
 	nomorhp := r.FormValue("nomorhp")
 	namakendaraan := r.FormValue("namakendaraan")
@@ -22,14 +25,14 @@ func PutUser(idparam primitive.ObjectID, db *mongo.Database, r *http.Request) (e
 	image := r.FormValue("file")
 
 	if namalengkap == "" || nomorhp == "" || namakendaraan == "" || nomorpolisi == "" {
-		return fmt.Errorf("mohon untuk melengkapi data")
+		return bson.M{}, fmt.Errorf("mohon untuk melengkapi data")
 	}
 	if image != "" {
 		imageUrl = image
 	} else {
 		imageUrl, err = evcharging.SaveFileToGithub("dimasardnt6", "dimasardnt6@gmail.com", "push-image", "evchargingpoint", r)
 		if err != nil {
-			return fmt.Errorf("error save file: %s", err)
+			return bson.M{}, fmt.Errorf("error save file: %s", err)
 		}
 		image = imageUrl
 	}
@@ -39,11 +42,22 @@ func PutUser(idparam primitive.ObjectID, db *mongo.Database, r *http.Request) (e
 		"nomorhp":       nomorhp,
 		"namakendaraan": namakendaraan,
 		"nomorpolisi":   nomorpolisi,
+		"email":         dataUser.Email,
+		"password":      dataUser.Password,
 		"image":         image,
+		"salt":          dataUser.Salt,
 	}
 	err = evcharging.UpdateOneDoc(idparam, db, "user", profile)
 	if err != nil {
-		return err
+		return bson.M{}, err
 	}
-	return nil
+	data := bson.M{
+		"namalengkap":   namalengkap,
+		"nomorhp":       nomorhp,
+		"nomorpolisi":   nomorpolisi,
+		"namakendaraan": namakendaraan,
+		"email":         dataUser.Email,
+		"image":         image,
+	}
+	return data, nil
 }

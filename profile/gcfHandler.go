@@ -58,12 +58,17 @@ func Put(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request)
 		response.Message = "error parsing application/json: " + err.Error()
 		return evcharging.GCFReturnStruct(response)
 	}
-	err = PutUser(user.Id, conn, r)
+	data, err := PutProfile(user.Id, conn, r)
 	if err != nil {
 		response.Message = err.Error()
 		return evcharging.GCFReturnStruct(response)
 	}
-	//
-	response.Message = "Anda tidak memiliki akses"
-	return evcharging.GCFReturnStruct(response)
+	response.Status = 200
+	response.Message = "Berhasil mengubah profile"
+	responData := bson.M{
+		"status":  response.Status,
+		"message": response.Message,
+		"data":    data,
+	}
+	return evcharging.GCFReturnStruct(responData)
 }
