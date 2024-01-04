@@ -160,7 +160,7 @@ func HapusChargingStationHandler(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname 
 		response.Message = err.Error()
 		return evcharging.GCFReturnStruct(response)
 	}
-	if user.Email == "admin@gmail.com" {
+	if user.Email != "admin@gmail.com" {
 		response.Message = "Anda tidak memiliki akses"
 		return evcharging.GCFReturnStruct(response)
 	}
