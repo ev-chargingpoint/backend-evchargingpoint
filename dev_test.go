@@ -38,11 +38,11 @@ func TestGetUserFromEmail(t *testing.T) {
 
 func TestSignUpUser(t *testing.T) {
 	var doc evcharging.User
-	doc.NamaLengkap = "Dimas Ardianto"
+	doc.NamaLengkap = "Admin"
 	doc.NomorHp = "089647129890"
-	doc.NamaKendaraan = "Hyundai ICONIC 6"
-	doc.NomorPolisi = "D 1234 ABC"
-	doc.Email = "dimasardnt6@gmail.com"
+	doc.NamaKendaraan = "admin"
+	doc.NomorPolisi = "admin"
+	doc.Email = "admin@gmail.com"
 	doc.Password = "fghjkliow"
 	doc.Confirmpassword = "fghjkliow"
 	_, err := signup.SignUpUser(db, doc)
