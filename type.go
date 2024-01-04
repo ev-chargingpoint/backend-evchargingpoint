@@ -24,7 +24,7 @@ type ChargingSatation struct {
 	ChargingKode   string             `bson:"chargingkode,omitempty" json:"chargingkode,omitempty"`
 	Nama           string             `bson:"nama,omitempty" json:"nama,omitempty"`
 	Alamat         string             `bson:"alamat,omitempty" json:"alamat,omitempty"`
-	AmmountPlugs   int                `bson:"ammountplugs,omitempty" json:"ammountplugs,omitempty"`
+	AmmountPlugs   string             `bson:"ammountplugs,omitempty" json:"ammountplugs,omitempty"`
 	Daya           string             `bson:"daya,omitempty" json:"daya,omitempty"`
 	Connector      string             `bson:"connector,omitempty" json:"connector,omitempty"`
 	Harga          string             `bson:"harga,omitempty" json:"harga,omitempty"`

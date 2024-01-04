@@ -27,7 +27,7 @@ func TestLogIn(t *testing.T) {
 }
 
 func TestGetUserFromEmail(t *testing.T) {
-	email := "dimasardnt6@gmail.com"
+	email := "admin@gmail.com"
 	hasil, err := profile.GetUserFromEmail(email, db)
 	if err != nil {
 		t.Errorf("Eerror TestGetUserFromEmail: %v", err)
@@ -63,6 +63,34 @@ func TestGetChargingStationFromID(t *testing.T) {
 		fmt.Println(hasil)
 	}
 }
+
+func TestCheckLatitudeLongitude(t *testing.T) {
+	latitude := "-6.8763112207612425"
+	longitude := "107.57108959575653"
+	hasil := charging_station.CheckLatitudeLongitude(db, latitude, longitude)
+	if hasil == false {
+		t.Errorf("Error TestCheckLatitudeLongitude: %v", hasil)
+	} else {
+		fmt.Println(hasil)
+	}
+}
+
+// func TestCheckLatitudelongitude(t *testing.T) {
+// 	err := charging_station.CheckLatitudeLongitude(db, "-6.8763112207612425", "107.57108959575653")
+// 	fmt.Println(err)
+// }
+
+// func TestChargingStation(t *testing.T) {
+// 	conn := db
+// 	id := "65966df243d1a9066896b75a"
+// 	objectId, err := primitive.ObjectIDFromHex(id)
+// 	err = charging_station.DeleteChargingStationOlehAdmin(objectId, conn)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	} else {
+// 		fmt.Println("Berhasil DeleteFishingSpot")
+// 	}
+// }
 
 // func TestAddChargingStationByAdmin(t *testing.T) {
 // 	var doc evcharging.ChargingSatation
