@@ -1,7 +1,6 @@
 package charging_station
 
 import (
-	"encoding/json"
 	"net/http"
 
 	evcharging "github.com/ev-chargingpoint/backend-evchargingpoint"
@@ -10,38 +9,8 @@ import (
 )
 
 var (
-	response        evcharging.Response
-	chargingstation evcharging.ChargingSatation
+	response evcharging.Response
 )
-
-// func Post(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request) string {
-// 	conn := evcharging.MongoConnect(MONGOCONNSTRINGENV, dbname)
-// 	response.Status = false
-// 	//
-// 	user, err := evcharging.GetUserLogin(PASETOPUBLICKEYENV, r)
-// 	if err != nil {
-// 		response.Message = err.Error()
-// 		return evcharging.GCFReturnStruct(response)
-// 	}
-// 	if user.Email != "admin@gmail.com" {
-// 		response.Message = "Anda tidak memiliki akses"
-// 		return evcharging.GCFReturnStruct(response)
-// 	}
-// 	err = json.NewDecoder(r.Body).Decode(&chargingstation)
-// 	if err != nil {
-// 		response.Message = "error parsing application/json: " + err.Error()
-// 		return evcharging.GCFReturnStruct(response)
-// 	}
-// 	err = PostChargingStationOlehAdmin(conn, r)
-// 	if err != nil {
-// 		response.Message = err.Error()
-// 		return evcharging.GCFReturnStruct(response)
-// 	}
-
-// 	response.Status = true
-// 	response.Message = "Berhasil Insert Charging Station"
-// 	return evcharging.GCFReturnStruct(response)
-// }
 
 func Post(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request) string {
 	conn := evcharging.MongoConnect(MONGOCONNSTRINGENV, dbname)
@@ -95,11 +64,7 @@ func Put(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request)
 		response.Message = "Invalid id parameter"
 		return evcharging.GCFReturnStruct(response)
 	}
-	err = json.NewDecoder(r.Body).Decode(&chargingstation)
-	if err != nil {
-		response.Message = "error parsing application/json: " + err.Error()
-		return evcharging.GCFReturnStruct(response)
-	}
+
 	data, err := PutChargingStationOlehAdmin(idparam, conn, r)
 	if err != nil {
 		response.Message = err.Error()
