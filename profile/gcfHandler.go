@@ -1,7 +1,6 @@
 package profile
 
 import (
-	"encoding/json"
 	"net/http"
 
 	evcharging "github.com/ev-chargingpoint/backend-evchargingpoint"
@@ -53,11 +52,11 @@ func Put(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request)
 		response.Message = "Gagal Decode Token : " + err.Error()
 		return evcharging.GCFReturnStruct(response)
 	}
-	err = json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		response.Message = "error parsing application/json: " + err.Error()
-		return evcharging.GCFReturnStruct(response)
-	}
+	// err = json.NewDecoder(r.Body).Decode(&user)
+	// if err != nil {
+	// 	response.Message = "error parsing application/json: " + err.Error()
+	// 	return evcharging.GCFReturnStruct(response)
+	// }
 	data, err := PutProfile(user.Id, conn, r)
 	if err != nil {
 		response.Message = err.Error()
