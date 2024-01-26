@@ -13,14 +13,14 @@ import (
 func CheckLatitudeLongitude(db *mongo.Database, latitude, longitude string) bool {
 	collection := db.Collection("chargingstation")
 	filter := bson.M{"latitude": latitude, "longitude": longitude}
-	err := collection.FindOne(context.Background(), filter).Decode(&evcharging.ChargingSatation{})
+	err := collection.FindOne(context.Background(), filter).Decode(&evcharging.ChargingStation{})
 	return err == nil
 }
 
 func CheckChargingKode(db *mongo.Database, chargingkode string) bool {
 	collection := db.Collection("chargingstation")
 	filter := bson.M{"chargingkode": chargingkode}
-	err := collection.FindOne(context.Background(), filter).Decode(&evcharging.ChargingSatation{})
+	err := collection.FindOne(context.Background(), filter).Decode(&evcharging.ChargingStation{})
 	return err == nil
 }
 

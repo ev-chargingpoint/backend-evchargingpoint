@@ -34,7 +34,6 @@ func PutProfile(idparam primitive.ObjectID, db *mongo.Database, r *http.Request)
 		if err != nil {
 			return bson.M{}, fmt.Errorf("error save file: %s", err)
 		}
-		image = imageUrl
 	}
 
 	profile := bson.M{
@@ -44,20 +43,11 @@ func PutProfile(idparam primitive.ObjectID, db *mongo.Database, r *http.Request)
 		"nomorpolisi":   nomorpolisi,
 		"email":         dataUser.Email,
 		"password":      dataUser.Password,
-		"image":         image,
-		"salt":          dataUser.Salt,
+		"image":         imageUrl,
 	}
 	err = evcharging.UpdateOneDoc(idparam, db, "user", profile)
 	if err != nil {
 		return bson.M{}, err
 	}
-	data := bson.M{
-		"namalengkap":   namalengkap,
-		"nomorhp":       nomorhp,
-		"nomorpolisi":   nomorpolisi,
-		"namakendaraan": namakendaraan,
-		"email":         dataUser.Email,
-		"image":         image,
-	}
-	return data, nil
+	return nil, err
 }

@@ -46,17 +46,12 @@ func Get(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request)
 func Put(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request) string {
 	conn := evcharging.MongoConnect(MONGOCONNSTRINGENV, dbname)
 	response.Status = 400
-	//
+
 	user, err := evcharging.GetUserLogin(PASETOPUBLICKEYENV, r)
 	if err != nil {
 		response.Message = "Gagal Decode Token : " + err.Error()
 		return evcharging.GCFReturnStruct(response)
 	}
-	// err = json.NewDecoder(r.Body).Decode(&user)
-	// if err != nil {
-	// 	response.Message = "error parsing application/json: " + err.Error()
-	// 	return evcharging.GCFReturnStruct(response)
-	// }
 	data, err := PutProfile(user.Id, conn, r)
 	if err != nil {
 		response.Message = err.Error()

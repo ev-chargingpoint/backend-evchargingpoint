@@ -79,23 +79,6 @@ func DeleteOneDoc(_id primitive.ObjectID, db *mongo.Database, col string) error 
 	return nil
 }
 
-// Get All User by Admin
-// func GetAllUserByAdmin(db *mongo.Database) (user []User, err error) {
-// 	collection := db.Collection("user")
-// 	filter := bson.M{}
-// 	cursor, err := collection.Find(context.Background(), filter)
-// 	if err != nil {
-// 		return user, fmt.Errorf("error GetAllUser mongo: %s", err)
-// 	}
-// 	err = cursor.All(context.Background(), &user)
-// 	if err != nil {
-// 		return user, fmt.Errorf("error GetAllUserByAdmin context: %s", err)
-// 	}
-// 	return user, nil
-// }
-
-// Get User
-
 // Get User Login
 func GetUserLogin(PASETOPUBLICKEYENV string, r *http.Request) (Payload, error) {
 	tokenstring := r.Header.Get("Authorization")

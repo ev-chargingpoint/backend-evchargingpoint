@@ -19,12 +19,12 @@ type User struct {
 	Salt            string             `bson:"salt,omitempty" json:"salt,omitempty"`
 }
 
-type ChargingSatation struct {
+type ChargingStation struct {
 	ID             primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	ChargingKode   string             `bson:"chargingkode,omitempty" json:"chargingkode,omitempty"`
 	Nama           string             `bson:"nama,omitempty" json:"nama,omitempty"`
 	Alamat         string             `bson:"alamat,omitempty" json:"alamat,omitempty"`
-	AmmountPlugs   string             `bson:"ammountplugs,omitempty" json:"ammountplugs,omitempty"`
+	AmmountPlugs   int                `bson:"ammountplugs,omitempty" json:"ammountplugs,omitempty"`
 	Daya           string             `bson:"daya,omitempty" json:"daya,omitempty"`
 	Connector      string             `bson:"connector,omitempty" json:"connector,omitempty"`
 	Harga          string             `bson:"harga,omitempty" json:"harga,omitempty"`
@@ -33,17 +33,21 @@ type ChargingSatation struct {
 	JamOperasional string             `bson:"jamoperasional,omitempty" json:"jamoperasional,omitempty"`
 	Longitude      string             `bson:"longitude,omitempty" json:"longitude,omitempty"`
 	Latitude       string             `bson:"latitude,omitempty" json:"latitude,omitempty"`
+	Available      int                `bson:"available,omitempty" json:"available,omitempty"`
 }
 
-type Transaksi struct {
-	ID               primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	ChargingSatation ChargingSatation   `bson:"chargingsatation,omitempty" json:"chargingsatation,omitempty"`
-	User             User               `bson:"user,omitempty" json:"user,omitempty"`
-	Tanggal          string             `bson:"tanggal,omitempty" json:"tanggal,omitempty"`
-	StartTime        time.Time          `bson:"starttime,omitempty" json:"starttime,omitempty"`
-	EndTime          time.Time          `bson:"endtime,omitempty" json:"endtime,omitempty"`
-	TotalPrice       string             `bson:"totalprice,omitempty" json:"totalprice,omitempty"`
-	Status           int                `bson:"status,omitempty" json:"status,omitempty"`
+type Charge struct {
+	ID              primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	ChargingStation ChargingStation    `bson:"chargingstation,omitempty" json:"chargingstation,omitempty"`
+	User            User               `bson:"user,omitempty" json:"user,omitempty"`
+	Tanggal         string             `bson:"tanggal,omitempty" json:"tanggal,omitempty"`
+	StartTime       string             `bson:"starttime,omitempty" json:"starttime,omitempty"`
+	EndTime         string             `bson:"endtime,omitempty" json:"endtime,omitempty"`
+	TotalPrice      float64            `bson:"totalprice,omitempty" json:"totalprice,omitempty"`
+	PaymentMethod   string             `bson:"paymentmethod,omitempty" json:"paymentmethod,omitempty"`
+	InputPembayaran float64            `bson:"inputpembayaran,omitempty" json:"inputpembayaran,omitempty"`
+	Payment         bool               `bson:"payment,omitempty" json:"payment,omitempty"`
+	Status          bool               `bson:"status,omitempty" json:"status,omitempty"`
 }
 
 type Credential struct {
