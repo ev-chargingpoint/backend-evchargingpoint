@@ -37,6 +37,11 @@ func GetAllChargingStation(db *mongo.Database) (charging []evcharging.ChargingSt
 
 		station.Available = station.AmmountPlugs - int(count)
 
+		_, err = collection.UpdateOne(context.TODO(), bson.M{"_id": station.ID}, bson.M{"$set": bson.M{"available": station.Available}})
+		if err != nil {
+			return charging, fmt.Errorf("failed to update available count for station ID %s: %s", station.ID, err.Error())
+		}
+
 		charging = append(charging, station)
 	}
 
@@ -53,5 +58,22 @@ func GetChargingStationFromID(_id primitive.ObjectID, db *mongo.Database) (doc e
 		}
 		return doc, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
 	}
+
+	count, err := db.Collection("charge_car").CountDocuments(context.TODO(), bson.M{
+		"chargingstation._id": doc.ID,
+		"payment":             true,
+		"status":              false,
+	})
+	if err != nil {
+		return doc, fmt.Errorf("failed to count charge transactions: %s", err.Error())
+	}
+
+	doc.Available = doc.AmmountPlugs - int(count)
+
+	_, err = collection.UpdateOne(context.TODO(), bson.M{"_id": doc.ID}, bson.M{"$set": bson.M{"available": doc.Available}})
+	if err != nil {
+		return doc, fmt.Errorf("failed to update available count for station ID %s: %s", doc.ID, err.Error())
+	}
+
 	return doc, nil
 }

@@ -37,8 +37,9 @@ func PostChargingStationOlehAdmin(db *mongo.Database, r *http.Request) (bson.M, 
 	jamoperasional := r.FormValue("jamoperasional")
 	longitude := r.FormValue("longitude")
 	latitude := r.FormValue("latitude")
+	available := ammountplugs
 
-	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == "" || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" {
+	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == "" || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" || available == "" {
 		return bson.M{}, fmt.Errorf("mohon untuk melengkapi data")
 	}
 	if CheckChargingKode(db, chargingkode) {
@@ -59,6 +60,7 @@ func PostChargingStationOlehAdmin(db *mongo.Database, r *http.Request) (bson.M, 
 		"alamat":         alamat,
 		"nomortelepon":   nomortelepon,
 		"ammountplugs":   ammountplugs,
+		"available":      available,
 		"daya":           daya,
 		"connector":      connector,
 		"image":          imageUrl,

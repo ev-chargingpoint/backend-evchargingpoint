@@ -25,8 +25,9 @@ func PutChargingStationOlehAdmin(_id primitive.ObjectID, db *mongo.Database, r *
 	jamoperasional := r.FormValue("jamoperasional")
 	longitude := r.FormValue("longitude")
 	latitude := r.FormValue("latitude")
+	available := ammountplugs
 
-	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == "" || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" {
+	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == "" || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" || available == "" {
 		return bson.M{}, fmt.Errorf("mohon untuk melengkapi data")
 	}
 	if image != "" {
@@ -45,6 +46,7 @@ func PutChargingStationOlehAdmin(_id primitive.ObjectID, db *mongo.Database, r *
 		"alamat":         alamat,
 		"nomortelepon":   nomortelepon,
 		"ammountplugs":   ammountplugs,
+		"available":      available,
 		"daya":           daya,
 		"connector":      connector,
 		"image":          image,

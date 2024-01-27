@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	evcharging "github.com/ev-chargingpoint/backend-evchargingpoint"
+	"github.com/ev-chargingpoint/backend-evchargingpoint/charge"
 	"github.com/ev-chargingpoint/backend-evchargingpoint/charging_station"
 	"github.com/ev-chargingpoint/backend-evchargingpoint/login"
 	"github.com/ev-chargingpoint/backend-evchargingpoint/profile"
@@ -36,6 +37,122 @@ func TestGetUserFromEmail(t *testing.T) {
 	}
 }
 
+func TestGetAllChargingStation(t *testing.T) {
+	hasil, err := charging_station.GetAllChargingStation(db)
+	if err != nil {
+		t.Errorf("Error TestGetAllChargingStation: %v", err)
+	} else {
+		fmt.Println(hasil)
+	}
+}
+
+func TestChargeCar(t *testing.T) {
+	idChargingStation, err := primitive.ObjectIDFromHex("659a39d90cb3a4271053fbd2")
+	if err != nil {
+		t.Fatalf("Failed to convert hex to ObjectID: %v", err)
+	}
+
+	idUser, err := primitive.ObjectIDFromHex("6593e4db369ad3e79a8d8a2d")
+	if err != nil {
+		t.Fatalf("Failed to convert hex to ObjectID: %v", err)
+	}
+
+	doc := evcharging.Charge{
+		User: evcharging.User{
+			ID: idUser,
+		},
+		ChargingStation: evcharging.ChargingStation{
+			ID: idChargingStation,
+		},
+		StartTime:  "2021-08-01 12:00:00",
+		EndTime:    "2021-08-01 13:00:00",
+		TotalKWH:   20,
+		TotalPrice: 20000,
+		Payment:    false,
+		Status:     false,
+	}
+
+	hasil, err := charge.ChargeCar(doc.ChargingStation.ID, doc.User.ID, db, doc)
+	if err != nil {
+		t.Errorf("Error TestChargeCar: %v", err)
+	}
+	if hasil == nil {
+		t.Errorf("Expected a result, got nil")
+	}
+}
+
+func TestProcessPayment(t *testing.T) {
+	idCharge, err := primitive.ObjectIDFromHex("65b4cf767c51df5030a51f79")
+	if err != nil {
+		t.Fatalf("Failed to convert hex to ObjectID: %v", err)
+	}
+
+	idUser, err := primitive.ObjectIDFromHex("6593e4db369ad3e79a8d8a2d")
+	if err != nil {
+		t.Fatalf("Failed to convert hex to ObjectID: %v", err)
+	}
+
+	doc := evcharging.Charge{
+		ChargingStation: evcharging.ChargingStation{
+			ID: idCharge,
+		},
+		User: evcharging.User{
+			ID: idUser,
+		},
+		PaymentMethod:   "OVO",
+		InputPembayaran: 20000,
+		Payment:         true,
+		Status:          false,
+	}
+	hasil, err := charge.ProcessPayment(doc.ChargingStation.ID, doc.User.ID, db, doc)
+	if err != nil {
+		t.Errorf("Error TestProcessPayment: %v", err)
+	}
+	if hasil == nil {
+		t.Errorf("Expected a result, got nil")
+	}
+}
+
+func TestProcessStatus(t *testing.T) {
+	idCharge, err := primitive.ObjectIDFromHex("65b4cf767c51df5030a51f79")
+	if err != nil {
+		t.Fatalf("Failed to convert hex to ObjectID: %v", err)
+	}
+
+	idUser, err := primitive.ObjectIDFromHex("6593e4db369ad3e79a8d8a2d")
+	if err != nil {
+		t.Fatalf("Failed to convert hex to ObjectID: %v", err)
+	}
+
+	doc := evcharging.Charge{
+		ChargingStation: evcharging.ChargingStation{
+			ID: idCharge,
+		},
+		User: evcharging.User{
+			ID: idUser,
+		},
+		Status: true,
+	}
+	hasil, err := charge.ProcessStatus(doc.ChargingStation.ID, doc.User.ID, db, doc)
+	if err != nil {
+		t.Errorf("Error TestProcessStatus: %v", err)
+	}
+	if hasil == nil {
+		t.Errorf("Expected a result, got nil")
+	}
+}
+
+func TestGetAllChargeByUser(t *testing.T) {
+	id := "6593e4db369ad3e79a8d8a2d"
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	hasil, err := charge.GetAllChargeByUser(objectId, db)
+	if err != nil {
+		t.Errorf("Error TestGetAllChargeByUser: %v", err)
+	} else {
+		fmt.Println(hasil)
+	}
+}
+
 func TestSignUpUser(t *testing.T) {
 	var doc evcharging.User
 	doc.NamaLengkap = "Admin"
@@ -54,7 +171,7 @@ func TestSignUpUser(t *testing.T) {
 }
 
 func TestGetChargingStationFromID(t *testing.T) {
-	id := "659159fd31636a48151a946c"
+	id := "6596b03e613816ef04ecb396"
 	objectId, _ := primitive.ObjectIDFromHex(id)
 	hasil, err := charging_station.GetChargingStationFromID(objectId, db)
 	if err != nil {
@@ -93,7 +210,7 @@ func TestCheckLatitudeLongitude(t *testing.T) {
 // }
 
 // func TestAddChargingStationByAdmin(t *testing.T) {
-// 	var doc evcharging.ChargingSatation
+// 	var doc evcharging.ChargingStation
 // 	doc.ChargingKode = "EVCP054"
 // 	doc.Nama = "EV Charger Point Bandung"
 // 	doc.Alamat = "Jl. Sariasih 3"

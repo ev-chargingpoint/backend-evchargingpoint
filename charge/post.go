@@ -17,8 +17,8 @@ func ChargeCar(idchargingstation, iduser primitive.ObjectID, db *mongo.Database,
 	if err != nil {
 		return bson.M{}, err
 	}
-
-	if !available {
+	fmt.Println("Available:", available)
+	if available {
 		return bson.M{}, fmt.Errorf("tempat pengisian daya tidak tersedia")
 	}
 	if insertedDoc.StartTime == "" || insertedDoc.EndTime == "" {
@@ -40,12 +40,12 @@ func ChargeCar(idchargingstation, iduser primitive.ObjectID, db *mongo.Database,
 		"user": bson.M{
 			"_id": user.ID,
 		},
-		"starttime":     insertedDoc.StartTime,
-		"endtime":       insertedDoc.EndTime,
-		"totalprice":    insertedDoc.TotalPrice,
-		"paymentmethod": insertedDoc.PaymentMethod,
-		"payment":       false,
-		"status":        false,
+		"starttime":  insertedDoc.StartTime,
+		"endtime":    insertedDoc.EndTime,
+		"totalkwh":   insertedDoc.TotalKWH,
+		"totalprice": insertedDoc.TotalPrice,
+		"payment":    false,
+		"status":     false,
 	}
 	_, err = evcharging.InsertOneDoc(db, "charge_car", charge)
 	if err != nil {
@@ -64,5 +64,6 @@ func CheckAvailable(db *mongo.Database, idchargingstation primitive.ObjectID) (b
 		return false, fmt.Errorf("failed to find charging station: %s", err.Error())
 	}
 
-	return chargingStation.Available > 0, nil
+	print("Available: ", chargingStation.Available)
+	return chargingStation.Available < 0, nil
 }

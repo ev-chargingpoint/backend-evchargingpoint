@@ -43,6 +43,7 @@ type Charge struct {
 	Tanggal         string             `bson:"tanggal,omitempty" json:"tanggal,omitempty"`
 	StartTime       string             `bson:"starttime,omitempty" json:"starttime,omitempty"`
 	EndTime         string             `bson:"endtime,omitempty" json:"endtime,omitempty"`
+	TotalKWH        float64            `bson:"totalkwh,omitempty" json:"totalkwh,omitempty"`
 	TotalPrice      float64            `bson:"totalprice,omitempty" json:"totalprice,omitempty"`
 	PaymentMethod   string             `bson:"paymentmethod,omitempty" json:"paymentmethod,omitempty"`
 	InputPembayaran float64            `bson:"inputpembayaran,omitempty" json:"inputpembayaran,omitempty"`

@@ -34,17 +34,12 @@ func ProcessPayment(_id, iduser primitive.ObjectID, db *mongo.Database, inserted
 	}
 
 	data := bson.M{
-		"charge": bson.M{
-			"_id": charge.ID,
-		},
-		"user": bson.M{
-			"_id": user.ID,
-		},
 		"starttime":       charge.StartTime,
 		"endtime":         charge.EndTime,
+		"totalkwh":        charge.TotalKWH,
 		"totalprice":      charge.TotalPrice,
 		"inputpembayaran": insertedDoc.InputPembayaran,
-		"paymentmethod":   charge.PaymentMethod,
+		"paymentmethod":   insertedDoc.PaymentMethod,
 		"payment":         charge.Payment,
 		"status":          charge.Status,
 	}
@@ -76,14 +71,9 @@ func ProcessStatus(_id, iduser primitive.ObjectID, db *mongo.Database, insertedD
 	}
 
 	data := bson.M{
-		"charge": bson.M{
-			"_id": charge.ID,
-		},
-		"user": bson.M{
-			"_id": user.ID,
-		},
 		"starttime":       charge.StartTime,
 		"endtime":         charge.EndTime,
+		"totalkwh":        charge.TotalKWH,
 		"totalprice":      charge.TotalPrice,
 		"inputpembayaran": charge.InputPembayaran,
 		"paymentmethod":   charge.PaymentMethod,
