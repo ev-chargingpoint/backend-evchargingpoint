@@ -66,8 +66,8 @@ func TestChargeCar(t *testing.T) {
 		},
 		StartTime:  "2021-08-01 12:00:00",
 		EndTime:    "2021-08-01 13:00:00",
-		TotalKWH:   20,
-		TotalPrice: 20000,
+		TotalKWH:   "20",
+		TotalPrice: "20000",
 		Payment:    false,
 		Status:     false,
 	}
@@ -100,7 +100,7 @@ func TestProcessPayment(t *testing.T) {
 			ID: idUser,
 		},
 		PaymentMethod:   "OVO",
-		InputPembayaran: 20000,
+		InputPembayaran: "20000",
 		Payment:         true,
 		Status:          false,
 	}
