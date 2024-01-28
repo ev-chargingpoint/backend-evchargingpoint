@@ -68,8 +68,6 @@ func TestChargeCar(t *testing.T) {
 		EndTime:    "2021-08-01 13:00:00",
 		TotalKWH:   "20",
 		TotalPrice: "20000",
-		Payment:    false,
-		Status:     false,
 	}
 
 	hasil, err := charge.ChargeCar(doc.ChargingStation.ID, doc.User.ID, db, doc)

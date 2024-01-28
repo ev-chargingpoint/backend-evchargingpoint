@@ -60,8 +60,9 @@ func GetChargeHandler(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *
 func ChargeHandler(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *http.Request) string {
 	conn := evcharging.MongoConnect(MONGOCONNSTRINGENV, dbname)
 	response.Status = 400
+	var chargeData evcharging.Charge
 
-	err := json.NewDecoder(r.Body).Decode(&evcharging.Charge{})
+	err := json.NewDecoder(r.Body).Decode(&chargeData)
 	if err != nil {
 		response.Message = "error parsing application/json: " + err.Error()
 		return evcharging.GCFReturnStruct(response)
@@ -82,7 +83,7 @@ func ChargeHandler(PASETOPUBLICKEYENV, MONGOCONNSTRINGENV, dbname string, r *htt
 		response.Message = "Invalid id parameter"
 		return evcharging.GCFReturnStruct(response)
 	}
-	data, err := ChargeCar(idchargingstation, user.Id, conn, evcharging.Charge{})
+	data, err := ChargeCar(idchargingstation, user.Id, conn, chargeData)
 	if err != nil {
 		response.Message = err.Error()
 		return evcharging.GCFReturnStruct(response)
