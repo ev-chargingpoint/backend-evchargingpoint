@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	evcharging "github.com/ev-chargingpoint/backend-evchargingpoint"
 	"go.mongodb.org/mongo-driver/bson"
@@ -30,16 +31,20 @@ func PostChargingStationOlehAdmin(db *mongo.Database, r *http.Request) (bson.M, 
 	nama := r.FormValue("nama")
 	alamat := r.FormValue("alamat")
 	nomortelepon := r.FormValue("nomortelepon")
-	ammountplugs := r.FormValue("ammountplugs")
 	daya := r.FormValue("daya")
 	connector := r.FormValue("connector")
 	harga := r.FormValue("harga")
 	jamoperasional := r.FormValue("jamoperasional")
 	longitude := r.FormValue("longitude")
 	latitude := r.FormValue("latitude")
+	ammountplugsStr := r.FormValue("ammountplugs")
+	ammountplugs, err := strconv.Atoi(ammountplugsStr)
+	if err != nil {
+		return bson.M{}, fmt.Errorf("ammountplugs should be an integer: %s", err)
+	}
 	available := ammountplugs
 
-	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == "" || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" || available == "" {
+	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == 0 || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" || available == 0 {
 		return bson.M{}, fmt.Errorf("mohon untuk melengkapi data")
 	}
 	if CheckChargingKode(db, chargingkode) {

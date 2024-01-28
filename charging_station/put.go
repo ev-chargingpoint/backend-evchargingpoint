@@ -3,6 +3,7 @@ package charging_station
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	evcharging "github.com/ev-chargingpoint/backend-evchargingpoint"
 	"go.mongodb.org/mongo-driver/bson"
@@ -17,7 +18,6 @@ func PutChargingStationOlehAdmin(_id primitive.ObjectID, db *mongo.Database, r *
 	nama := r.FormValue("nama")
 	alamat := r.FormValue("alamat")
 	nomortelepon := r.FormValue("nomortelepon")
-	ammountplugs := r.FormValue("ammountplugs")
 	daya := r.FormValue("daya")
 	connector := r.FormValue("connector")
 	image := r.FormValue("file")
@@ -25,9 +25,14 @@ func PutChargingStationOlehAdmin(_id primitive.ObjectID, db *mongo.Database, r *
 	jamoperasional := r.FormValue("jamoperasional")
 	longitude := r.FormValue("longitude")
 	latitude := r.FormValue("latitude")
+	ammountplugsStr := r.FormValue("ammountplugs")
+	ammountplugs, err := strconv.Atoi(ammountplugsStr)
+	if err != nil {
+		return bson.M{}, fmt.Errorf("ammountplugs should be an integer: %s", err)
+	}
 	available := ammountplugs
 
-	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == "" || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" || available == "" {
+	if chargingkode == "" || nama == "" || alamat == "" || nomortelepon == "" || ammountplugs == 0 || daya == "" || connector == "" || harga == "" || jamoperasional == "" || latitude == "" || longitude == "" || available == 0 {
 		return bson.M{}, fmt.Errorf("mohon untuk melengkapi data")
 	}
 	if image != "" {
@@ -55,7 +60,7 @@ func PutChargingStationOlehAdmin(_id primitive.ObjectID, db *mongo.Database, r *
 		"longitude":      longitude,
 		"latitude":       latitude,
 	}
-	err := evcharging.UpdateOneDoc(_id, db, "chargingstation", chargingstation)
+	err = evcharging.UpdateOneDoc(_id, db, "chargingstation", chargingstation)
 	if err != nil {
 		return bson.M{}, err
 	}
